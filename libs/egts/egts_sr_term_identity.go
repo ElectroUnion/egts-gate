@@ -139,14 +139,24 @@ func (e *SrTermIdentity) Encode() ([]byte, error) {
 	}
 
 	if e.IMEIE == "1" {
-		if _, err = buf.Write([]byte(e.IMEI)); err != nil {
+		wbb := 0
+		if wbb, err = buf.Write([]byte(e.IMEI)); err != nil {
 			return result, fmt.Errorf("Не удалось записать IMEI при авторизации")
+		}
+		if wbb < 15 {
+			tmp := make([]byte, 15-wbb)
+			buf.Write(tmp)
 		}
 	}
 
 	if e.IMSIE == "1" {
-		if _, err = buf.Write([]byte(e.IMSI)); err != nil {
+		wbb := 0
+		if wbb, err = buf.Write([]byte(e.IMSI)); err != nil {
 			return result, fmt.Errorf("Не удалось записать IMSI при авторизации")
+		}
+		if wbb < 16 {
+			tmp := make([]byte, 16-wbb)
+			buf.Write(tmp)
 		}
 	}
 
