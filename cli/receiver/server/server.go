@@ -157,7 +157,7 @@ func (s *Server) handleConn(conn net.Conn) {
 				serviceType = rec.SourceServiceType
 				log.Info("Тип сервиса ", serviceType)
 
-				// exportPacket.Client = rec.ObjectIdentifier
+				exportPacket.Client = rec.ObjectIdentifier
 
 				for _, subRec := range rec.RecordDataSet {
 					switch subRecData := subRec.SubrecordData.(type) {
@@ -166,7 +166,7 @@ func (s *Server) handleConn(conn net.Conn) {
 						fmt.Printf("Разбор подзаписи EGTS_SR_TERM_IDENTITY: %+v\n\n", subRecData)
 
 						exportPacket.TermId = strings.Clone(subRecData.IMEI)
-						exportPacket.Client = 777
+						exportPacket.ReceivedTimestamp = 777
 
 						fmt.Printf("!!!!: %+v\n\n", exportPacket)
 
@@ -189,7 +189,7 @@ func (s *Server) handleConn(conn net.Conn) {
 						isPkgSave = true
 
 						exportPacket.NavigationTimestamp = subRecData.NavigationTime.Unix()
-						exportPacket.ReceivedTimestamp = receivedTimestamp
+						// exportPacket.ReceivedTimestamp = receivedTimestamp
 						// exportPacket.Latitude = subRecData.Latitude
 						// exportPacket.Longitude = subRecData.Longitude
 						// exportPacket.Speed = subRecData.Speed
