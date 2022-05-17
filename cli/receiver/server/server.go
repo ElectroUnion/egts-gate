@@ -161,6 +161,14 @@ func (s *Server) handleConn(conn net.Conn) {
 
 				for _, subRec := range rec.RecordDataSet {
 					switch subRecData := subRec.SubrecordData.(type) {
+					case *egts.SrAuthInfo:
+						log.Debug("Разбор подзаписи EGTS_SR_AUTH_INFO")
+						if srResultCodePkg, err = createSrResultCode(pkg.PacketIdentifier, egtsPcOk); err != nil {
+							log.Errorf("Ошибка сборки EGTS_SR_RESULT_CODE: %v", err)
+						}
+					case *egts.SrResponse:
+						log.Debugf("Разбор подзаписи EGTS_SR_RESPONSE")
+						goto Received
 					case *egts.SrTermIdentity:
 						// log.Debug("Разбор подзаписи EGTS_SR_TERM_IDENTITY")
 						fmt.Printf("Разбор подзаписи EGTS_SR_TERM_IDENTITY: %+v\n\n", subRecData)
@@ -173,14 +181,6 @@ func (s *Server) handleConn(conn net.Conn) {
 						if srResultCodePkg, err = createSrResultCode(pkg.PacketIdentifier, egtsPcOk); err != nil {
 							log.Errorf("Ошибка сборки EGTS_SR_RESULT_CODE: %v", err)
 						}
-					case *egts.SrAuthInfo:
-						log.Debug("Разбор подзаписи EGTS_SR_AUTH_INFO")
-						if srResultCodePkg, err = createSrResultCode(pkg.PacketIdentifier, egtsPcOk); err != nil {
-							log.Errorf("Ошибка сборки EGTS_SR_RESULT_CODE: %v", err)
-						}
-					case *egts.SrResponse:
-						log.Debugf("Разбор подзаписи EGTS_SR_RESPONSE")
-						goto Received
 					case *egts.SrPosData:
 						// SrPosData
 						if !isPkgSave {
