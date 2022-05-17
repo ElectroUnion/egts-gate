@@ -183,7 +183,6 @@ func (s *Server) handleConn(conn net.Conn) {
 						if !isPkgSave {
 							log.Debugf("Разбор подзаписи EGTS_SR_POS_DATA")
 						}
-						isPkgSave = true
 
 						exportPacket.NavigationTimestamp = subRecData.NavigationTime.Unix()
 						exportPacket.ReceivedTimestamp = receivedTimestamp
@@ -192,14 +191,17 @@ func (s *Server) handleConn(conn net.Conn) {
 						// exportPacket.Speed = subRecData.Speed
 						// exportPacket.Course = subRecData.Direction
 
-						// locData := storage.LocState{
-						// 	Latitude: subRecData.Latitude,
-						// 	Longitude: subRecData.Longitude,
-						// 	Speed: subRecData.Speed,
-						// 	NavigationTimestamp: subRecData.NavigationTime.Unix(),
-						// }
-						// exportPacket.LocStates = append(exportPacket.LocStates, locData)
+						if !isPkgSave {
+							locData := storage.LocState{
+								Latitude: subRecData.Latitude,
+								Longitude: subRecData.Longitude,
+								Speed: subRecData.Speed,
+								NavigationTimestamp: subRecData.NavigationTime.Unix(),
+							}
+							exportPacket.LocStates = append(exportPacket.LocStates, locData)
+						}
 
+						isPkgSave = true
 					case *egts.SrExtPosData:
 						log.Debug("Разбор подзаписи EGTS_SR_EXT_POS_DATA")
 						exportPacket.Nsat = subRecData.Satellites
