@@ -118,8 +118,9 @@ func (s *Server) handleConn(conn net.Conn) {
 
 		// log.WithField("packet", recvPacket).Debug("Принят пакет")
 		log.Debug("Принят пакет...")
+		receivedTimestamp := time.Now().UTC().Unix()
+
 		pkg := egts.Package{}
-		// receivedTimestamp := time.Now().UTC().Unix()
 		resultCode, err := pkg.Decode(recvPacket)
 		if err != nil {
 			log.WithField("err", err).Error("Ошибка расшифровки пакета")
