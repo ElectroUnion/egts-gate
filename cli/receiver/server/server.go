@@ -138,12 +138,13 @@ func (s *Server) handleConn(conn net.Conn) {
 		case egts.PtAppdataPacket:
 			log.Debug("Тип пакета EGTS_PT_APPDATA")
 
-			for _, rec := range *pkg.ServicesFrameData.(*egts.ServiceDataSet) {
-				exportPacket := storage.NavRecord{
-					PacketID: uint32(pkg.PacketIdentifier),
-				}
+			exportPacket := storage.NavRecord{
+				PacketID: uint32(pkg.PacketIdentifier),
+			}
 
-				isPkgSave = false
+			isPkgSave = false
+
+			for _, rec := range *pkg.ServicesFrameData.(*egts.ServiceDataSet) {
 				packetIDBytes := make([]byte, 4)
 
 				srResponsesRecord = append(srResponsesRecord, egts.RecordData{
@@ -172,15 +173,11 @@ func (s *Server) handleConn(conn net.Conn) {
 					case *egts.SrTermIdentity:
 						// log.Debug("Разбор подзаписи EGTS_SR_TERM_IDENTITY")
 						fmt.Printf("Разбор подзаписи EGTS_SR_TERM_IDENTITY: %+v\n\n", subRecData)
-
-						exportPacket.TermId = strings.Clone(subRecData.IMEI)
-						exportPacket.ReceivedTimestamp = 777
-
-						fmt.Printf("!!!!: %+v\n\n", exportPacket)
-
 						if srResultCodePkg, err = createSrResultCode(pkg.PacketIdentifier, egtsPcOk); err != nil {
 							log.Errorf("Ошибка сборки EGTS_SR_RESULT_CODE: %v", err)
 						}
+
+						exportPacket.IMEI = subRecData.IMEI
 					case *egts.SrPosData:
 						// SrPosData
 						if !isPkgSave {
@@ -189,7 +186,7 @@ func (s *Server) handleConn(conn net.Conn) {
 						isPkgSave = true
 
 						exportPacket.NavigationTimestamp = subRecData.NavigationTime.Unix()
-						// exportPacket.ReceivedTimestamp = receivedTimestamp
+						exportPacket.ReceivedTimestamp = receivedTimestamp
 						// exportPacket.Latitude = subRecData.Latitude
 						// exportPacket.Longitude = subRecData.Longitude
 						// exportPacket.Speed = subRecData.Speed
@@ -284,12 +281,11 @@ func (s *Server) handleConn(conn net.Conn) {
 					}
 				}
 
-				if isPkgSave {
-					fmt.Printf("SAVE: %+v\n\n", exportPacket)
+			}
 
-					if err := s.store.Save(&exportPacket); err != nil {
-						log.WithField("err", err).Error("Ошибка сохранения телеметрии")
-					}
+			if isPkgSave {
+				if err := s.store.Save(&exportPacket); err != nil {
+					log.WithField("err", err).Error("Ошибка сохранения телеметрии")
 				}
 			}
 

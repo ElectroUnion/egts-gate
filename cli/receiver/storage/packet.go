@@ -7,6 +7,7 @@ import (
 type NavRecord struct {
 	Client              uint32         					`json:"client"`
 	PacketID            uint32         					`json:"packet_id"`
+	IMEI								string 									`json:"IMEI"`
 	NavigationTimestamp int64          					`json:"navigation_unix_time"`
 	ReceivedTimestamp   int64          					`json:"received_unix_time"`
 	Pdop                uint16         					`json:"pdop"`
@@ -17,7 +18,6 @@ type NavRecord struct {
 	AnSensors           []AnSensor     					`json:"an_sensors"`
 	LiquidSensors       []LiquidSensor 					`json:"liquid_sensors"`
 	LocStates						[]LocState     					`json:"loc_states"`
-	TermId 							string              		`json:"term_id"`
 }
 
 func (eep *NavRecord) ToBytes() ([]byte, error) {
