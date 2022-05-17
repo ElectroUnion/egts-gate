@@ -140,6 +140,7 @@ func (s *Server) handleConn(conn net.Conn) {
 
 			exportPacket := storage.NavRecord{
 				PacketID: uint32(pkg.PacketIdentifier),
+				LocStatesCount: 0,
 			}
 
 			isPkgSave = false
@@ -200,6 +201,7 @@ func (s *Server) handleConn(conn net.Conn) {
 							}
 							exportPacket.LocStates = append(exportPacket.LocStates, locData)
 						}
+						exportPacket.LocStatesCount++
 
 						isPkgSave = true
 					case *egts.SrExtPosData:
