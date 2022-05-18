@@ -19,6 +19,7 @@ type NavRecord struct {
 	LiquidSensors       []LiquidSensor `json:"liquid_sensors"`
 	LocStates           []LocState     `json:"loc_states"`
 	LocStatesCount      int32          `json:"loc_states_count"`
+	LastLocState        LocState       `json:"last_loc_state"`
 }
 
 func (eep *NavRecord) ToBytes() ([]byte, error) {

@@ -192,14 +192,17 @@ func (s *Server) handleConn(conn net.Conn) {
 						// exportPacket.Speed = subRecData.Speed
 						// exportPacket.Course = subRecData.Direction
 
+						locData := storage.LocState{
+							Latitude:            subRecData.Latitude,
+							Longitude:           subRecData.Longitude,
+							Speed:               subRecData.Speed,
+							NavigationTimestamp: subRecData.NavigationTime.Unix(),
+							NavigationDt:        subRecData.NavigationTime.Format(time.RFC3339),
+						}
+
+						exportPacket.LastLocState = locData
+
 						if !isPkgSave {
-							locData := storage.LocState{
-								Latitude:            subRecData.Latitude,
-								Longitude:           subRecData.Longitude,
-								Speed:               subRecData.Speed,
-								NavigationTimestamp: subRecData.NavigationTime.Unix(),
-								NavigationDt:        subRecData.NavigationTime.Format(time.RFC3339),
-							}
 							exportPacket.LocStates = append(exportPacket.LocStates, locData)
 						}
 						exportPacket.LocStatesCount++
