@@ -6,8 +6,6 @@ import (
 	"net"
 	"time"
 
-	"fmt"
-
 	"github.com/ElectroUnion/egts-gate/cli/receiver/storage"
 	"github.com/ElectroUnion/egts-gate/libs/egts"
 	log "github.com/sirupsen/logrus"
@@ -268,8 +266,8 @@ func (s *Server) handleConn(conn net.Conn) {
 							exportPacket.PacketID = binary.LittleEndian.Uint32(packetIDBytes)
 						}
 					case *egts.SrLiquidLevelSensor:
-						// log.Debug("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR")
-						fmt.Printf("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR: %+v\n\n", subRecData)
+						log.Debug("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR")
+						// fmt.Printf("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR: %+v\n\n", subRecData)
 
 						sensorData := storage.LiquidSensor{
 							SensorNumber: subRecData.LiquidLevelSensorNumber,
