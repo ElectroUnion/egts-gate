@@ -310,7 +310,7 @@ func (s *Server) handleConn(conn net.Conn) {
 
 			if len(srResultCodePkg) > 0 {
 				_, _ = conn.Write(srResultCodePkg)
-				log.WithField("packet", resp).Debug("Отправлен пакет EGTS_SR_RESULT_CODE")
+				log.WithField("packet", srResultCodePkg).Debug("Отправлен пакет EGTS_SR_RESULT_CODE")
 			}
 		case egts.PtResponsePacket:
 			log.Debug("Тип пакета EGTS_PT_RESPONSE")
