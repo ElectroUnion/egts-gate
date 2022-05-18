@@ -198,6 +198,7 @@ func (s *Server) handleConn(conn net.Conn) {
 								Longitude:           subRecData.Longitude,
 								Speed:               subRecData.Speed,
 								NavigationTimestamp: subRecData.NavigationTime.Unix(),
+								NavigationDt:        subRecData.NavigationTime.Format(time.RFC3339),
 							}
 							exportPacket.LocStates = append(exportPacket.LocStates, locData)
 						}

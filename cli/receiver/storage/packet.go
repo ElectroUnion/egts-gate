@@ -30,6 +30,7 @@ type LocState struct {
 	Longitude           float64 `json:"lng"`
 	Speed               uint16  `json:"speed"`
 	NavigationTimestamp int64   `json:"navigation_unix_time"`
+	NavigationDt        string  `json:"navigation_dt"`
 }
 
 type LiquidSensor struct {
