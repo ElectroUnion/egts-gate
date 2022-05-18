@@ -12,12 +12,14 @@ topic = "receiver"
 
 import (
 	"fmt"
+
 	"github.com/nsqio/go-nsq"
+	log "github.com/sirupsen/logrus"
 )
 
 type Connector struct {
-	producer   *nsq.Producer
-	config     map[string]string
+	producer *nsq.Producer
+	config   map[string]string
 }
 
 func (c *Connector) Init(cfg map[string]string) error {
@@ -29,7 +31,7 @@ func (c *Connector) Init(cfg map[string]string) error {
 	}
 	c.config = cfg
 
-	fmt.Println("Connect to NSQ server:", c.config["server"])
+	log.Info("Connect to NSQ server:", c.config["server"])
 
 	config := nsq.NewConfig()
 
