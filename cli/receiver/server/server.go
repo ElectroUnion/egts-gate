@@ -2,13 +2,15 @@ package server
 
 import (
 	"encoding/binary"
-	"github.com/ElectroUnion/egts-gate/cli/receiver/storage"
-	"github.com/ElectroUnion/egts-gate/libs/egts"
-	log "github.com/sirupsen/logrus"
 	"io"
 	"net"
 	"time"
-	// "fmt"
+
+	"fmt"
+
+	"github.com/ElectroUnion/egts-gate/cli/receiver/storage"
+	"github.com/ElectroUnion/egts-gate/libs/egts"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -139,7 +141,7 @@ func (s *Server) handleConn(conn net.Conn) {
 			log.Debug("Тип пакета EGTS_PT_APPDATA")
 
 			exportPacket := storage.NavRecord{
-				PacketID: uint32(pkg.PacketIdentifier),
+				PacketID:       uint32(pkg.PacketIdentifier),
 				LocStatesCount: 0,
 			}
 
@@ -194,9 +196,9 @@ func (s *Server) handleConn(conn net.Conn) {
 
 						if !isPkgSave {
 							locData := storage.LocState{
-								Latitude: subRecData.Latitude,
-								Longitude: subRecData.Longitude,
-								Speed: subRecData.Speed,
+								Latitude:            subRecData.Latitude,
+								Longitude:           subRecData.Longitude,
+								Speed:               subRecData.Speed,
 								NavigationTimestamp: subRecData.NavigationTime.Unix(),
 							}
 							exportPacket.LocStates = append(exportPacket.LocStates, locData)
@@ -266,8 +268,8 @@ func (s *Server) handleConn(conn net.Conn) {
 							exportPacket.PacketID = binary.LittleEndian.Uint32(packetIDBytes)
 						}
 					case *egts.SrLiquidLevelSensor:
-						log.Debug("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR")
-						// fmt.Printf("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR: %+v\n\n", subRecData)
+						// log.Debug("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR")
+						fmt.Printf("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR: %+v\n\n", subRecData)
 
 						sensorData := storage.LiquidSensor{
 							SensorNumber: subRecData.LiquidLevelSensorNumber,
