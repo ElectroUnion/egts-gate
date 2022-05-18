@@ -280,7 +280,7 @@ func (s *Server) handleConn(conn net.Conn) {
 						case "00", "01":
 							sensorData.ValueMm = subRecData.LiquidLevelSensorData
 						case "10":
-							sensorData.ValueL = subRecData.LiquidLevelSensorData * 10
+							sensorData.ValueL = float64(subRecData.LiquidLevelSensorData) / 10
 						}
 
 						exportPacket.LiquidSensors = append(exportPacket.LiquidSensors, sensorData)

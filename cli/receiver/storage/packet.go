@@ -33,10 +33,10 @@ type LocState struct {
 }
 
 type LiquidSensor struct {
-	SensorNumber uint8  `json:"sensor_number"`
-	ErrorFlag    string `json:"error_flag"`
-	ValueMm      uint32 `json:"value_mm"`
-	ValueL       uint32 `json:"value_l"`
+	SensorNumber uint8   `json:"sensor_number"`
+	ErrorFlag    string  `json:"error_flag"`
+	ValueMm      uint32  `json:"value_mm"`
+	ValueL       float64 `json:"value_l"`
 }
 
 type AnSensor struct {
