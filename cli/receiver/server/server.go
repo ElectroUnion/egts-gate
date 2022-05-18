@@ -172,8 +172,8 @@ func (s *Server) handleConn(conn net.Conn) {
 						log.Debugf("Разбор подзаписи EGTS_SR_RESPONSE")
 						goto Received
 					case *egts.SrTermIdentity:
-						// log.Debug("Разбор подзаписи EGTS_SR_TERM_IDENTITY")
-						fmt.Printf("Разбор подзаписи EGTS_SR_TERM_IDENTITY: %+v\n\n", subRecData)
+						log.Debug("Разбор подзаписи EGTS_SR_TERM_IDENTITY")
+						// fmt.Printf("Разбор подзаписи EGTS_SR_TERM_IDENTITY: %+v\n\n", subRecData)
 						if srResultCodePkg, err = createSrResultCode(pkg.PacketIdentifier, egtsPcOk); err != nil {
 							log.Errorf("Ошибка сборки EGTS_SR_RESULT_CODE: %v", err)
 						}
@@ -266,8 +266,8 @@ func (s *Server) handleConn(conn net.Conn) {
 							exportPacket.PacketID = binary.LittleEndian.Uint32(packetIDBytes)
 						}
 					case *egts.SrLiquidLevelSensor:
-						// log.Debug("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR")
-						fmt.Printf("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR: %+v\n\n", subRecData)
+						log.Debug("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR")
+						// fmt.Printf("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR: %+v\n\n", subRecData)
 
 						sensorData := storage.LiquidSensor{
 							SensorNumber: subRecData.LiquidLevelSensorNumber,
