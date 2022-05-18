@@ -200,7 +200,9 @@ func (s *Server) handleConn(conn net.Conn) {
 							NavigationDt:        subRecData.NavigationTime.Format(time.RFC3339),
 						}
 
-						exportPacket.LastLocState = locData
+						if exportPacket.LastLocState.NavigationDt < locData.NavigationDt {
+							exportPacket.LastLocState = locData
+						}
 
 						if !isPkgSave {
 							exportPacket.LocStates = append(exportPacket.LocStates, locData)
