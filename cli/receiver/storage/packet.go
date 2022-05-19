@@ -6,15 +6,10 @@ import (
 
 type NavRecord struct {
 	IMEI                string         `json:"IMEI"`
+	ReceivedDt          string         `json:"received_dt"`
 	Client              uint32         `json:"client"`
 	PacketID            uint32         `json:"packet_id"`
 	NavigationTimestamp int64          `json:"navigation_unix_time"`
-	ReceivedTimestamp   int64          `json:"received_unix_time"`
-	Pdop                uint16         `json:"pdop"`
-	Hdop                uint16         `json:"hdop"`
-	Vdop                uint16         `json:"vdop"`
-	Nsat                uint8          `json:"nsat"`
-	Ns                  uint16         `json:"ns"`
 	AnSensors           []AnSensor     `json:"an_sensors"`
 	LiquidSensors       []LiquidSensor `json:"liquid_sensors"`
 	LocStates           []LocState     `json:"loc_states"`
@@ -27,11 +22,10 @@ func (eep *NavRecord) ToBytes() ([]byte, error) {
 }
 
 type LocState struct {
-	Latitude            float64 `json:"lat"`
-	Longitude           float64 `json:"lng"`
-	Speed               uint16  `json:"speed"`
-	NavigationTimestamp int64   `json:"navigation_unix_time"`
-	NavigationDt        string  `json:"navigation_dt"`
+	Latitude     float64 `json:"lat"`
+	Longitude    float64 `json:"lng"`
+	Speed        uint16  `json:"speed"`
+	NavigationDt string  `json:"navigation_dt"`
 }
 
 type LiquidSensor struct {

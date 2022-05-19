@@ -117,7 +117,7 @@ func (s *Server) handleConn(conn net.Conn) {
 
 		// log.WithField("packet", recvPacket).Debug("Принят пакет")
 		log.Debug("Принят пакет...")
-		receivedTimestamp := time.Now().UTC().Unix()
+		ReceivedDt := time.Now().UTC().Format(time.RFC3339)
 
 		pkg := egts.Package{}
 		resultCode, err := pkg.Decode(recvPacket)
@@ -140,6 +140,7 @@ func (s *Server) handleConn(conn net.Conn) {
 
 			exportPacket := storage.NavRecord{
 				PacketID:       uint32(pkg.PacketIdentifier),
+				ReceivedDt:     ReceivedDt,
 				LocStatesCount: 0,
 			}
 
@@ -186,18 +187,16 @@ func (s *Server) handleConn(conn net.Conn) {
 						}
 
 						exportPacket.NavigationTimestamp = subRecData.NavigationTime.Unix()
-						exportPacket.ReceivedTimestamp = receivedTimestamp
 						// exportPacket.Latitude = subRecData.Latitude
 						// exportPacket.Longitude = subRecData.Longitude
 						// exportPacket.Speed = subRecData.Speed
 						// exportPacket.Course = subRecData.Direction
 
 						locData := storage.LocState{
-							Latitude:            subRecData.Latitude,
-							Longitude:           subRecData.Longitude,
-							Speed:               subRecData.Speed,
-							NavigationTimestamp: subRecData.NavigationTime.Unix(),
-							NavigationDt:        subRecData.NavigationTime.Format(time.RFC3339),
+							Latitude:     subRecData.Latitude,
+							Longitude:    subRecData.Longitude,
+							Speed:        subRecData.Speed,
+							NavigationDt: subRecData.NavigationTime.Format(time.RFC3339),
 						}
 
 						if exportPacket.LastLocState.NavigationDt < locData.NavigationDt {
@@ -212,11 +211,11 @@ func (s *Server) handleConn(conn net.Conn) {
 						isPkgSave = true
 					case *egts.SrExtPosData:
 						log.Debug("Разбор подзаписи EGTS_SR_EXT_POS_DATA")
-						exportPacket.Nsat = subRecData.Satellites
-						exportPacket.Pdop = subRecData.PositionDilutionOfPrecision
-						exportPacket.Hdop = subRecData.HorizontalDilutionOfPrecision
-						exportPacket.Vdop = subRecData.VerticalDilutionOfPrecision
-						exportPacket.Ns = subRecData.NavigationSystem
+						// exportPacket.Nsat = subRecData.Satellites
+						// exportPacket.Pdop = subRecData.PositionDilutionOfPrecision
+						// exportPacket.Hdop = subRecData.HorizontalDilutionOfPrecision
+						// exportPacket.Vdop = subRecData.VerticalDilutionOfPrecision
+						// exportPacket.Ns = subRecData.NavigationSystem
 
 					case *egts.SrAdSensorsData:
 						log.Debug("Разбор подзаписи EGTS_SR_AD_SENSORS_DATA")
