@@ -272,7 +272,9 @@ func (s *Server) handleConn(conn net.Conn) {
 
 						sensorData := storage.LiquidSensor{
 							SensorNumber: subRecData.LiquidLevelSensorNumber,
+							ModuleNumber: subRecData.ModuleAddress,
 							ErrorFlag:    subRecData.LiquidLevelSensorErrorFlag,
+							ValueUnit:    subRecData.LiquidLevelSensorValueUnit,
 						}
 
 						switch subRecData.LiquidLevelSensorValueUnit {

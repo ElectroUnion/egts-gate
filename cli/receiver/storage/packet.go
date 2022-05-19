@@ -29,7 +29,9 @@ type LocState struct {
 
 type LiquidSensor struct {
 	SensorNumber uint8   `json:"sensor_number"`
+	ModuleNumber uint16  `json:"module_number"`
 	ErrorFlag    string  `json:"error_flag"`
+	ValueUnit    string  `json:"value_unit"`
 	ValueMm      uint32  `json:"value_mm"`
 	ValueL       float64 `json:"value_l"`
 }
