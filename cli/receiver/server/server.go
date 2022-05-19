@@ -160,7 +160,7 @@ func (s *Server) handleConn(conn net.Conn) {
 				serviceType = rec.SourceServiceType
 				log.Info("Тип сервиса ", serviceType)
 
-				exportPacket.Client = rec.ObjectIdentifier
+				exportPacket.ClientID = rec.ObjectIdentifier
 
 				for _, subRec := range rec.RecordDataSet {
 					switch subRecData := subRec.SubrecordData.(type) {
