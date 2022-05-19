@@ -13,7 +13,6 @@ type NavRecord struct {
 	AnSensors           []AnSensor     `json:"an_sensors"`
 	LiquidSensors       []LiquidSensor `json:"liquid_sensors"`
 	LocStates           []LocState     `json:"loc_states"`
-	LastLocState        LocState       `json:"last_loc_state"`
 	LocStatesCount      int32          `json:"loc_states_count"`
 }
 
