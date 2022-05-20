@@ -6,8 +6,6 @@ import (
 	"net"
 	"time"
 
-	"fmt"
-
 	"github.com/ElectroUnion/egts-gate/cli/receiver/storage"
 	"github.com/ElectroUnion/egts-gate/libs/egts"
 	log "github.com/sirupsen/logrus"
@@ -19,10 +17,11 @@ const (
 )
 
 type Server struct {
-	addr  string
-	ttl   time.Duration
-	store *storage.Repository
-	l     net.Listener
+	serverId string
+	addr     string
+	ttl      time.Duration
+	store    *storage.Repository
+	l        net.Listener
 }
 
 func (s *Server) Run() {
@@ -141,6 +140,7 @@ func (s *Server) handleConn(conn net.Conn) {
 			log.Debug("Тип пакета EGTS_PT_APPDATA")
 
 			exportPacket := storage.NavRecord{
+				ServerID:       s.serverId,
 				PacketID:       uint32(pkg.PacketIdentifier),
 				ReceivedDt:     ReceivedDt,
 				LocStatesCount: 0,
@@ -267,8 +267,8 @@ func (s *Server) handleConn(conn net.Conn) {
 							exportPacket.PacketID = binary.LittleEndian.Uint32(packetIDBytes)
 						}
 					case *egts.SrLiquidLevelSensor:
-						// log.Debug("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR")
-						fmt.Printf("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR: %+v\n\n", subRecData)
+						log.Debug("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR")
+						// fmt.Printf("Разбор подзаписи EGTS_SR_LIQUID_LEVEL_SENSOR: %+v\n\n", subRecData)
 
 						sensorData := storage.LiquidSensor{
 							SensorNumber: subRecData.LiquidLevelSensorNumber,
@@ -318,9 +318,10 @@ func (s *Server) handleConn(conn net.Conn) {
 
 func New(srvAddress string, ttl time.Duration, s *storage.Repository) Server {
 	return Server{
-		addr:  srvAddress,
-		ttl:   ttl,
-		store: s,
+		serverId: "EGTS_GATE0",
+		addr:     srvAddress,
+		ttl:      ttl,
+		store:    s,
 	}
 }
 

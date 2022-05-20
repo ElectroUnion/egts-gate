@@ -5,6 +5,7 @@ import (
 )
 
 type NavRecord struct {
+	ServerID            string         `json:"server_id"`
 	IMEI                string         `json:"IMEI"`
 	ClientID            uint32         `json:"client_id"`
 	ReceivedDt          string         `json:"received_dt"`
